@@ -1,6 +1,6 @@
-#gin_table.seat_player test strategy
-##Control Flow
-[Control Flow](gin_table.seat_player.control_flow.png)
+# gin_table.seat_player test strategy
+## Control Flow
+![Control Flow](gin_table.seat_player.control_flow.png)
 
 |   Scenario   |Node   |   Node Description    |   Interpretation   |
 |:--------:|:----:|----------------|--------------|
@@ -22,4 +22,11 @@
 | | 6(F) | not self.player2 | player2 != null |
 | | 8 | raise TableSeatingError("gintable is full") |--|
 
- 
+## Data Flow Model
+![Data Flow Model](gin_table.seat_player.data_flow.png)
+## All uses of player
+0-1-2
+
+0-1-3-5
+
+0-1-4-5
