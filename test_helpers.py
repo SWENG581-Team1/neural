@@ -100,6 +100,31 @@ class Helper(unittest.TestCase):
         (1, 'c')
     ]
 
+    #Everything in this group should be a part of a meld
+    card_data9 = [
+        (1, 's'),
+        (2, 's'),
+        (3, 's'),
+        (2, 'h'),
+        (3, 'h'),
+        (4, 'h'),
+        (5, 'h'),
+        (13, 's'),
+        (12, 's'),
+        (11, 's'),
+        (12, 'd'),
+        (11, 'd'),
+        (10, 'd')
+    ]
+
+    #Everything in this group should not have a meld
+    card_data8 = [
+        (1, 'c'),
+        (2, 'd'),
+        (13, 'd'),
+        (12, 'c')
+    ]
+
     @staticmethod
     def generate_ginhand_from_card_data(cdata):
         g = GinHand()
