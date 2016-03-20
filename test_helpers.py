@@ -96,6 +96,10 @@ class Helper(unittest.TestCase):
         (13, 'd')
     ]
 
+    card_data7 = [
+        (1, 'c')
+    ]
+
     @staticmethod
     def generate_ginhand_from_card_data(cdata):
         g = GinHand()
