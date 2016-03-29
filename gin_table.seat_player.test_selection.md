@@ -1,4 +1,4 @@
-# gin_table.seat_player test strategy
+#Test Strategy gin_table.seat_player
 ## Control Flow
 ![Control Flow](gin_table.seat_player.control_flow.png)
 
