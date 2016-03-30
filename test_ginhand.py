@@ -318,13 +318,13 @@ class TestGinCardGroup(Helper):
             card = GinCard(c[0], c[1])
             self.assertEqual(False, cgroup._is_in_a_meld(card), "Failed to detect undersized hand")
 
-        cgroup = self.generate_gincardgroup_from_card_data(card_data8)
-        for c in card_data8:
+        cgroup = self.generate_gincardgroup_from_card_data(self.card_data8)
+        for c in self.card_data8:
             card = GinCard(c[0], c[1])
             self.assertEqual(False, cgroup._is_in_a_meld(card), "F-rank: %d, suit: %s" % (card.rank, card.suit))
 
-        cgroup = self.generate_gincardgroup_from_card_data(card_data9)
-        for c in card_data9:
+        cgroup = self.generate_gincardgroup_from_card_data(self.card_data9)
+        for c in self.card_data9:
             card = GinCard(c[0], c[1])
             self.assertEqual(True, cgroup._is_in_a_meld(card), "T-rank: %d, suit: %s" % (card.rank, card.suit))
 
