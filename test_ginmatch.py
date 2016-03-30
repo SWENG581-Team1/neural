@@ -335,7 +335,7 @@ class TestGinMatch(Helper):
 
         # if the knock was VALID, ensure we penalize the player and that the game continues
         self.gm.process_knock_gin(self.p2)
-        self.assertFalse(self.gm.p2_knocked_improperly)
+        self.assertTrue(self.gm.p2_knocked_improperly)
         self.assertNotEqual(self.gm.player_who_knocked_gin, self.p2)
         self.assertEqual(self.gm.player_who_knocked, self.p2)
         self.assertTrue(self.gm.gameover)
@@ -430,7 +430,7 @@ class TestGinMatch(Helper):
 
     def test_offer_to_accept_improper_knock_ineligible_accepter(self):
         # set up the improper knock conditions (here p1 knocks with deadwood=55, while p2 holds deadwood=37)
-        self.test_process_knock_gin_invalid_11points()
+        self.test_process_knock_gin_invalid_55points()
         self.p2.hand = self.generate_ginhand_from_card_data(self.card_data6_layoff)
         self.assertTrue(self.p2.hand.deadwood_count() > 10)
         self.gm.gameover = False
@@ -447,7 +447,7 @@ class TestGinMatch(Helper):
     # deadwood count.
     def test_offer_to_accept_improper_knock_decline(self):
         # set up the improper knock conditions (here p1 knocks with deadwood=55, while p2 holds deadwood=1)
-        self.test_process_knock_gin_invalid_11points()
+        self.test_process_knock_gin_invalid_55points()
         self.p2.hand = self.generate_ginhand_from_card_data(self.hand_10_deadwood)
         self.gm.gameover = False
 
