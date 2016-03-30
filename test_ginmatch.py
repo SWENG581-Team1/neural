@@ -6,7 +6,7 @@ from test_ginstrategy import MockGinStrategy
 # noinspection PyProtectedMember
 class TestGinMatch(Helper):
 
-    awful_hand_data = [
+    hand_55_deadwood = [
         (1, 'd'),
         (2, 'c'),
         (3, 'd'),
@@ -20,7 +20,7 @@ class TestGinMatch(Helper):
     ]
 
     #Invalid knock just above boundry 11 points of deadwood
-    almost_knock_worth_data = [
+    hand_11_deadwood = [
         (1,'d'),
         (2,'h'),
         (3,'h'),
@@ -34,7 +34,7 @@ class TestGinMatch(Helper):
     ]
 
     #Valid knock just at 10 points of deadwood
-    knock_worthy_hand_data = [
+    hand_10_deadwood = [
         (1, 'c'),
         (2, 'c'),
         (3, 'c'),
@@ -48,7 +48,7 @@ class TestGinMatch(Helper):
     ]
 
     #Valid knock just above gin 1 points of deadwood
-    almost_gin_hand = [
+    hand_1_deadwood = [
         (1, 'd'),
         (2, 'c'),
         (3, 'c'),
@@ -62,7 +62,7 @@ class TestGinMatch(Helper):
     ]
 
     #Gin (zero points of deadwood)
-    gin_worthy_hand_data = [
+    hand_0_deadwood = [
         (1, 'c'),
         (2, 'c'),
         (3, 'c'),
@@ -193,10 +193,10 @@ class TestGinMatch(Helper):
         self.gm = GinMatch(self.p1, self.p2)
         self.p1.strategy = MockGinStrategy({'end': ['KNOCK', 10]})
 
-        self.p1.hand = self.generate_ginhand_from_card_data(self.gin_worthy_hand_data)
+        self.p1.hand = self.generate_ginhand_from_card_data(self.hand_0_deadwood)
         # give p1 an 11th card for discarding
         self.p1.hand.add_card(GinCard(1, 'h'))
-        self.p2.hand = self.generate_ginhand_from_card_data(self.knock_worthy_hand_data)
+        self.p2.hand = self.generate_ginhand_from_card_data(self.hand_10_deadwood)
 
         # after turn taking is done, we should reach the gameover state and have exactly one knocker
         self.gm.take_turns()
@@ -208,10 +208,10 @@ class TestGinMatch(Helper):
 
     def test_end_with_knock_invalid(self):
         # morbidly awful hand with deadwood = 55
-        self.p1.hand = self.generate_ginhand_from_card_data(self.awful_hand_data)
+        self.p1.hand = self.generate_ginhand_from_card_data(self.hand_55_deadwood)
 
         # knock-worthy hand with deadwood=1
-        self.p2.hand = self.generate_ginhand_from_card_data(self.knock_worthy_hand_data)
+        self.p2.hand = self.generate_ginhand_from_card_data(self.hand_10_deadwood)
 
         # if the knock was INVALID, ensure we penalize the player by exposing his cards
         self.gm.process_knock(self.p1)
@@ -221,10 +221,10 @@ class TestGinMatch(Helper):
 
     def test_knock_invalid_11points(self):
         # morbidly awful hand with deadwood = 55
-        self.p1.hand = self.generate_ginhand_from_card_data(self.almost_knock_worth_data)
+        self.p1.hand = self.generate_ginhand_from_card_data(self.hand_11_deadwood)
 
         # knock-worthy hand with deadwood=1
-        self.p2.hand = self.generate_ginhand_from_card_data(self.knock_worthy_hand_data)
+        self.p2.hand = self.generate_ginhand_from_card_data(self.hand_10_deadwood)
 
         # if the knock was INVALID, ensure we penalize the player by exposing his cards
         self.gm.process_knock(self.p1)
@@ -238,10 +238,10 @@ class TestGinMatch(Helper):
         self.gm = GinMatch(self.p1, self.p2)
 
         # morbidly awful hand with deadwood = 55
-        self.p1.hand = self.generate_ginhand_from_card_data(self.awful_hand_data)
+        self.p1.hand = self.generate_ginhand_from_card_data(self.hand_55_deadwood)
 
         # knock-worthy hand with deadwood=1
-        self.p2.hand = self.generate_ginhand_from_card_data(self.knock_worthy_hand_data)
+        self.p2.hand = self.generate_ginhand_from_card_data(self.hand_10_deadwood)
 
         # if the knock was VALID, ensure we mark the game as over
         self.gm.process_knock(self.p2)
@@ -256,10 +256,10 @@ class TestGinMatch(Helper):
         self.gm = GinMatch(self.p1, self.p2)
 
         # morbidly awful hand with deadwood = 55
-        self.p1.hand = self.generate_ginhand_from_card_data(self.awful_hand_data)
+        self.p1.hand = self.generate_ginhand_from_card_data(self.hand_55_deadwood)
 
         # knock-worthy hand with deadwood=1
-        self.p2.hand = self.generate_ginhand_from_card_data(self.almost_gin_hand)
+        self.p2.hand = self.generate_ginhand_from_card_data(self.hand_1_deadwood)
 
         # if the knock was VALID, ensure we mark the game as over
         self.gm.process_knock(self.p2)
@@ -274,10 +274,10 @@ class TestGinMatch(Helper):
         self.gm = GinMatch(self.p1, self.p2)
 
         # morbidly awful hand with deadwood = 55
-        self.p1.hand = self.generate_ginhand_from_card_data(self.awful_hand_data)
+        self.p1.hand = self.generate_ginhand_from_card_data(self.hand_55_deadwood)
 
         # knock-worthy hand with deadwood=1
-        self.p2.hand = self.generate_ginhand_from_card_data(self.almost_gin_hand)
+        self.p2.hand = self.generate_ginhand_from_card_data(self.hand_1_deadwood)
 
         # if the knock was VALID, ensure we mark the game as over
         self.gm.process_knock(self.p2)
@@ -286,12 +286,25 @@ class TestGinMatch(Helper):
         self.assertEqual(self.gm.player_who_knocked, self.p2)
         self.assertNotEqual(self.gm.player_who_knocked_gin, self.p2)
 
-    def test_process_knock_gin_invalid_11points(self):
+    def test_process_knock_gin_invalid_55points(self):
         # morbidly awful hand with deadwood = 55
-        self.p1.hand = self.generate_ginhand_from_card_data(self.almost_knock_worth_data)
+        self.p1.hand = self.generate_ginhand_from_card_data(self.hand_55_deadwood)
 
         # knock-worthy hand with deadwood=1
-        self.p2.hand = self.generate_ginhand_from_card_data(self.knock_worthy_hand_data)
+        self.p2.hand = self.generate_ginhand_from_card_data(self.hand_1_deadwood)
+
+        # if the knock was INVALID, ensure we penalize the player by exposing the cards (also, gameover is not yet set)
+        self.gm.process_knock_gin(self.p1)
+        self.assertTrue(self.gm.p1_knocked_improperly)
+        self.assertFalse(self.gm.player_who_knocked)
+        self.assertNotEqual(self.gm.player_who_knocked_gin, self.p1)
+
+    def test_process_knock_gin_invalid_11points(self):
+        # morbidly awful hand with deadwood = 55
+        self.p1.hand = self.generate_ginhand_from_card_data(self.hand_11_deadwood)
+
+        # knock-worthy hand with deadwood=1
+        self.p2.hand = self.generate_ginhand_from_card_data(self.hand_10_deadwood)
 
         # if the knock was INVALID, ensure we penalize the player by exposing the cards (also, gameover is not yet set)
         self.gm.process_knock_gin(self.p1)
@@ -301,10 +314,10 @@ class TestGinMatch(Helper):
 
     def test_process_knock_gin_valid_10points(self):
         # morbidly awful hand with deadwood = 55
-        self.p1.hand = self.generate_ginhand_from_card_data(self.awful_hand_data)
+        self.p1.hand = self.generate_ginhand_from_card_data(self.hand_55_deadwood)
 
         # gin-worthy hand with deadwood=10
-        self.p2.hand = self.generate_ginhand_from_card_data(self.knock_worthy_hand_data)
+        self.p2.hand = self.generate_ginhand_from_card_data(self.hand_10_deadwood)
 
         # if the knock was VALID, ensure we penalize the player and that the game continues
         self.gm.process_knock_gin(self.p2)
@@ -315,10 +328,10 @@ class TestGinMatch(Helper):
 
     def test_process_knock_gin_valid_1point(self):
         # morbidly awful hand with deadwood = 55
-        self.p1.hand = self.generate_ginhand_from_card_data(self.awful_hand_data)
+        self.p1.hand = self.generate_ginhand_from_card_data(self.hand_55_deadwood)
 
         # gin-worthy hand with deadwood=1
-        self.p2.hand = self.generate_ginhand_from_card_data(self.almost_gin_hand)
+        self.p2.hand = self.generate_ginhand_from_card_data(self.hand_1_deadwood)
 
         # if the knock was VALID, ensure we penalize the player and that the game continues
         self.gm.process_knock_gin(self.p2)
@@ -329,10 +342,10 @@ class TestGinMatch(Helper):
 
     def test_process_knock_gin_valid_0points(self):
         # morbidly awful hand with deadwood = 55
-        self.p1.hand = self.generate_ginhand_from_card_data(self.awful_hand_data)
+        self.p1.hand = self.generate_ginhand_from_card_data(self.hand_55_deadwood)
 
         # gin-worthy hand with deadwood=0
-        self.p2.hand = self.generate_ginhand_from_card_data(self.gin_worthy_hand_data)
+        self.p2.hand = self.generate_ginhand_from_card_data(self.hand_0_deadwood)
 
         # if the knock was VALID, ensure we penalize the player and that the game continues
         self.gm.process_knock_gin(self.p2)
@@ -351,10 +364,10 @@ class TestGinMatch(Helper):
 
     def test_update_score_for_gin(self):
         # morbidly awful hand with deadwood = 55
-        self.p1.hand = self.generate_ginhand_from_card_data(self.awful_hand_data)
+        self.p1.hand = self.generate_ginhand_from_card_data(self.hand_55_deadwood)
 
         # gin-worthy hand with deadwood=0
-        self.p2.hand = self.generate_ginhand_from_card_data(self.gin_worthy_hand_data)
+        self.p2.hand = self.generate_ginhand_from_card_data(self.hand_0_deadwood)
 
         # add a card to discard
         dummy_card = GinCard(2, 'd')
@@ -369,10 +382,10 @@ class TestGinMatch(Helper):
 
     def test_update_score_for_knock(self):
         # morbidly awful hand with deadwood = 55
-        self.p1.hand = self.generate_ginhand_from_card_data(self.awful_hand_data)
+        self.p1.hand = self.generate_ginhand_from_card_data(self.hand_55_deadwood)
 
         # knock-worthy hand with deadwood=1
-        self.p2.hand = self.generate_ginhand_from_card_data(self.knock_worthy_hand_data)
+        self.p2.hand = self.generate_ginhand_from_card_data(self.hand_1_deadwood)
 
         # add a card to discard
         dummy_card = GinCard(2, 'd')
@@ -387,12 +400,12 @@ class TestGinMatch(Helper):
 
     def test_update_score_with_knock_undercut(self):
         # knock-worthy hand with deadwood=1
-        self.p1.hand = self.generate_ginhand_from_card_data(self.knock_worthy_hand_data)
+        self.p1.hand = self.generate_ginhand_from_card_data(self.hand_1_deadwood)
         dummy_card = GinCard(2, 'd')
         self.p1._add_card(dummy_card)
 
         # for whatever reason, p2 decided to bm by not knocking gin
-        self.p2.hand = self.generate_ginhand_from_card_data(self.gin_worthy_hand_data)
+        self.p2.hand = self.generate_ginhand_from_card_data(self.hand_0_deadwood)
 
         # p1 knocks, believing he has the best hand
         self.p1.knock(dummy_card)
@@ -405,7 +418,7 @@ class TestGinMatch(Helper):
 
     def test_offer_to_accept_improper_knock(self):
         # set up the improper knock conditions (here p1 knocks with deadwood=55, while p2 holds deadwood=1)
-        self.test_process_knock_gin_invalid_11points()
+        self.test_process_knock_gin_invalid_55points()
 
         # we force p2 to ACCEPT the knock
         self.p2.strategy.accept_improper_knock = self.return_true
@@ -435,7 +448,7 @@ class TestGinMatch(Helper):
     def test_offer_to_accept_improper_knock_decline(self):
         # set up the improper knock conditions (here p1 knocks with deadwood=55, while p2 holds deadwood=1)
         self.test_process_knock_gin_invalid_11points()
-        self.p2.hand = self.generate_ginhand_from_card_data(self.knock_worthy_hand_data)
+        self.p2.hand = self.generate_ginhand_from_card_data(self.hand_10_deadwood)
         self.gm.gameover = False
 
         # we instruct p2 to REJECT the knock
