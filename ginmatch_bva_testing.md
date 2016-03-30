@@ -24,12 +24,19 @@ Unfortunately these methods do not have a return value, so we must observe the s
 3. player_who_knocked
 4. player_who_knocked_gin
 
-## Expected output process_knock and process_knock_gin
+## Expected output process_knock process_knock_gin
 | Input                | knocked_improperly | game_over | player_who_knocked | player_who_knocked_gin |
 |----------------------|--------------------|-----------|--------------------|------------------------|
 | Gin                  | False              | True      | False              | True                   |
 | Valid knock, not gin | False              | True      | True               | False                  |
-| Not Gin              |  True              | False     | False              | False                  |
+| Not Valid            |  True              | False     | False              | False                  |
+
+## Expected output process_knock_gin
+| Input                | knocked_improperly | game_over | player_who_knocked | player_who_knocked_gin |
+|----------------------|--------------------|-----------|--------------------|------------------------|
+| Gin                  | False              | True      | False              | True                   |
+| Valid knock, not gin | True               | False      | True               | False                  |
+| Not Valid            | True               | False     | False              | False                  |
 
 ## Actions taken
 The existing test architecture provided test cases that tested an aweful hand (55 points of deadwood), a valid knock (10 points of deadwood), and gin (0 points of deadwood).  In order to establish BVA testing, test cases were added for 1 point and 11 points of deadwood.

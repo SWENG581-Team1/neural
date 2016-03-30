@@ -248,7 +248,7 @@ class TestGinMatch(Helper):
         self.assertFalse(self.gm.p2_knocked_improperly)
         self.assertTrue(self.gm.gameover)
         self.assertEqual(self.gm.player_who_knocked, self.p2)
-        self.assertNotEqual(self.gm.player_who_knocked, self.p2)
+        self.assertEqual(self.gm.player_who_knocked, self.p2)
 
     def test_process_knock_valid_1point(self):
         self.p1 = GinPlayer()
@@ -323,8 +323,7 @@ class TestGinMatch(Helper):
         self.gm.process_knock_gin(self.p2)
         self.assertTrue(self.gm.p2_knocked_improperly)
         self.assertNotEqual(self.gm.player_who_knocked_gin, self.p2)
-        self.assertEqual(self.gm.player_who_knocked, self.p2)
-        self.assertTrue(self.gm.gameover)
+        self.assertFalse(self.gm.gameover)
 
     def test_process_knock_gin_valid_1point(self):
         # morbidly awful hand with deadwood = 55
@@ -337,8 +336,7 @@ class TestGinMatch(Helper):
         self.gm.process_knock_gin(self.p2)
         self.assertTrue(self.gm.p2_knocked_improperly)
         self.assertNotEqual(self.gm.player_who_knocked_gin, self.p2)
-        self.assertEqual(self.gm.player_who_knocked, self.p2)
-        self.assertTrue(self.gm.gameover)
+        self.assertFalse(self.gm.gameover)
 
     def test_process_knock_gin_valid_0points(self):
         # morbidly awful hand with deadwood = 55
